@@ -14,6 +14,9 @@ import { PowerSettingsNew as PowerSettingsNewIcon } from "@mui/icons-material";
 import { Search as SearchIcon } from "@mui/icons-material";
 
 const useStyles = makeStyles({
+  root: {
+    transform: "translateZ(0)",
+  },
   searchInput: {
     opacity: "0.6",
     padding: "0px 8px",
@@ -31,7 +34,11 @@ const Header = () => {
   const classes = useStyles();
 
   return (
-    <AppBar position="static" style={{ backgroundColor: "#fff" }}>
+    <AppBar
+      position="static"
+      className={classes.root}
+      style={{ backgroundColor: "#fff" }}
+    >
       <Toolbar>
         <Grid container alignItems="center">
           <Grid item>
