@@ -23,10 +23,38 @@ const initialFValues = {
 };
 
 const EmployeeForm = () => {
-  const { values, setValues, handleInputChange } = useForm(initialFValues);
+  const validate = (fieldValues = values) => {
+    let temp = { ...errors };
+    if ("fullName" in fieldValues)
+      temp.fullName = fieldValues.fullName ? "" : "This field is required";
+    if ("email" in fieldValues)
+      temp.email = /$^|.+@.+..+/.test(fieldValues.email)
+        ? ""
+        : "Email is not valid";
+    if ("mobile" in fieldValues)
+      temp.mobile =
+        fieldValues.mobile.length > 9 ? "" : "Minimum 10 numbers required";
+    if ("departmentId" in fieldValues)
+      temp.departmentId =
+        fieldValues.departmentId.length !== 0 ? "" : "This field is required";
+    setErrors({
+      ...temp,
+    });
+
+    if (fieldValues === values)
+      return Object.values(temp).every((x) => x === "");
+  };
+
+  const { values, setValues, errors, setErrors, handleInputChange, resetForm } =
+    useForm(initialFValues, true, validate);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validate()) window.alert("testing...");
+  };
 
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Grid container>
         <Grid item xs={6}>
           <Controls.Input
@@ -34,6 +62,7 @@ const EmployeeForm = () => {
             label="Full Name"
             value={values.fullName}
             onChange={handleInputChange}
+            error={errors.fullName}
           />
           <Controls.Input
             variant="outlined"
@@ -41,6 +70,7 @@ const EmployeeForm = () => {
             name="email"
             value={values.email}
             onChange={handleInputChange}
+            error={errors.email}
           />
           <Controls.Input
             variant="outlined"
@@ -48,6 +78,7 @@ const EmployeeForm = () => {
             name="mobile"
             value={values.mobile}
             onChange={handleInputChange}
+            error={errors.mobile}
           />
           <Controls.Input
             variant="outlined"
@@ -71,6 +102,7 @@ const EmployeeForm = () => {
             value={values.departmentId}
             onChange={handleInputChange}
             options={employeeService.getDepartmentCollection()}
+            error={errors.departmentId}
           />
           <Controls.DatePicker
             name="hireDate"
@@ -86,7 +118,11 @@ const EmployeeForm = () => {
           />
           <div>
             <Controls.Button text="Submit" type="submit" />
-            <Controls.Button text="Reset" color="secondary" />
+            <Controls.Button
+              text="Reset"
+              color="secondary"
+              onClick={resetForm}
+            />
           </div>
         </Grid>
       </Grid>
