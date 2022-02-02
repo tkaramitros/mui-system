@@ -4,9 +4,8 @@ import SideMenu from "../components/SideMenu";
 import { makeStyles } from "@mui/styles";
 import Header from "../components/Header";
 import { CssBaseline } from "@mui/material";
-import PageHeader from "../components/PageHeader";
-import { PeopleOutlineTwoTone } from "@mui/icons-material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Employees from "../pages/employees/Employees";
 
 const theme = createTheme({
   palette: {
@@ -53,11 +52,8 @@ const App = () => {
       <SideMenu />
       <div className={classes.appMain}>
         <Header />
-        <PageHeader
-          title="Page Header"
-          subTitle="Page description"
-          icon={<PeopleOutlineTwoTone fontSize="large" />}
-        />
+
+        <Employees />
       </div>
       <CssBaseline />
     </ThemeProvider>
