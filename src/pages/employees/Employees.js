@@ -19,6 +19,7 @@ import AddIcon from "@mui/icons-material/Add";
 import Popup from "../../components/Popup";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CloseIcon from "@mui/icons-material/Close";
+import Notification from "../../components/Notification";
 
 const useStyles = makeStyles((theme) => ({
   pageContent: {
@@ -52,6 +53,12 @@ const Employees = () => {
     },
   });
   const [openPopup, setOpenPopup] = useState(false);
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+
   const { TblContainer, TblHead, TblPagination, recordsAfterPaginAndSorting } =
     useTable(records, headCells, filterFn);
 
@@ -75,11 +82,28 @@ const Employees = () => {
     setRecordForEdit(null);
     setOpenPopup(false);
     setRecords(employeeService.getAllEmployees());
+    setNotify({
+      isOpen: true,
+      message: "Submited Successfully!",
+      type: "success",
+    });
   };
 
   const openInPopup = (item) => {
     setRecordForEdit(item);
     setOpenPopup(true);
+  };
+
+  const onDelete = (id) => {
+    if (window.confirm("Are you sure?")) {
+      employeeService.deleteEmployee(id);
+      setRecords(employeeService.getAllEmployees());
+      setNotify({
+        isOpen: true,
+        message: "Deleted Successfully",
+        type: "error",
+      });
+    }
   };
 
   return (
@@ -132,7 +156,10 @@ const Employees = () => {
                       }}
                     />
                   </Controls.ActionButton>
-                  <Controls.ActionButton color="secondary">
+                  <Controls.ActionButton
+                    color="secondary"
+                    onClick={() => onDelete(item.id)}
+                  >
                     <CloseIcon fontSize="small" />
                   </Controls.ActionButton>
                 </TableCell>
@@ -149,6 +176,7 @@ const Employees = () => {
       >
         <EmployeeForm addOrEdit={addOrEdit} recordForEdit={recordForEdit} />
       </Popup>
+      <Notification notify={notify} setNotify={setNotify} />
     </>
   );
 };
