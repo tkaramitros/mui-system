@@ -7,7 +7,7 @@ import { CssBaseline } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Employees from "../pages/employees/Employees";
 
-const theme = createTheme({
+export const theme = createTheme({
   palette: {
     primary: {
       main: "#333996",

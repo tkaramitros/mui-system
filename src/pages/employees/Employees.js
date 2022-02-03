@@ -15,6 +15,8 @@ import useTable from "../../components/useTable";
 import * as employeeService from "../../services/employeeService";
 import Controls from "../../components/controls/Controls";
 import { Search } from "@mui/icons-material";
+import AddIcon from "@mui/icons-material/Add";
+import Popup from "../../components/Popup";
 
 const useStyles = makeStyles((theme) => ({
   pageContent: {
@@ -23,6 +25,10 @@ const useStyles = makeStyles((theme) => ({
   },
   searchInput: {
     width: "75%",
+  },
+  newButton: {
+    position: "absolute",
+    left: "235px",
   },
 }));
 
@@ -41,6 +47,7 @@ const Employees = () => {
       return items;
     },
   });
+  const [openPopup, setOpenPopup] = useState(false);
   const { TblContainer, TblHead, TblPagination, recordsAfterPaginAndSorting } =
     useTable(records, headCells, filterFn);
 
@@ -57,6 +64,13 @@ const Employees = () => {
     });
   };
 
+  const addOrEdit = (employee, resetForm) => {
+    employeeService.insertEmployee(employee);
+    resetForm();
+    setOpenPopup(false);
+    setRecords(employeeService.getAllEmployees());
+  };
+
   return (
     <>
       <PageHeader
@@ -65,7 +79,6 @@ const Employees = () => {
         icon={<PeopleOutlineTwoTone fontSize="large" />}
       />
       <Paper className={classes.pageContent}>
-        {/*<EmployeeForm />*/}
         <Toolbar>
           <Controls.Input
             className={classes.searchInput}
@@ -78,6 +91,13 @@ const Employees = () => {
               ),
             }}
             onChange={handleSearch}
+          />
+          <Controls.Button
+            text="Add New"
+            variant="outlined"
+            startIcon={<AddIcon />}
+            className={classes.newButton}
+            onClick={() => setOpenPopup(true)}
           />
         </Toolbar>
         <TblContainer>
@@ -95,6 +115,13 @@ const Employees = () => {
         </TblContainer>
         <TblPagination />
       </Paper>
+      <Popup
+        title="Employee Form"
+        openPopup={openPopup}
+        setOpenPopup={setOpenPopup}
+      >
+        <EmployeeForm addOrEdit={addOrEdit} />
+      </Popup>
     </>
   );
 };
