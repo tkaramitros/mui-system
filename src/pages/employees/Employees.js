@@ -17,6 +17,8 @@ import Controls from "../../components/controls/Controls";
 import { Search } from "@mui/icons-material";
 import AddIcon from "@mui/icons-material/Add";
 import Popup from "../../components/Popup";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import CloseIcon from "@mui/icons-material/Close";
 
 const useStyles = makeStyles((theme) => ({
   pageContent: {
@@ -36,12 +38,14 @@ const headCells = [
   { id: "fullName", label: "Employee Name" },
   { id: "email", label: "Email Adress (Personal)" },
   { id: "mobile", label: "Mobile Number" },
-  { id: "department", label: "Department", disableSorting: true },
+  { id: "department", label: "Department" },
+  { id: "actions", label: "Actions", disableSorting: true },
 ];
 
 const Employees = () => {
   const classes = useStyles();
   const [records, setRecords] = useState(employeeService.getAllEmployees());
+  const [recordForEdit, setRecordForEdit] = useState(null);
   const [filterFn, setFilterFn] = useState({
     fn: (items) => {
       return items;
@@ -65,10 +69,17 @@ const Employees = () => {
   };
 
   const addOrEdit = (employee, resetForm) => {
-    employeeService.insertEmployee(employee);
+    if (employee.id == 0) employeeService.insertEmployee(employee);
+    else employeeService.updateEmployee(employee);
     resetForm();
+    setRecordForEdit(null);
     setOpenPopup(false);
     setRecords(employeeService.getAllEmployees());
+  };
+
+  const openInPopup = (item) => {
+    setRecordForEdit(item);
+    setOpenPopup(true);
   };
 
   return (
@@ -97,7 +108,10 @@ const Employees = () => {
             variant="outlined"
             startIcon={<AddIcon />}
             className={classes.newButton}
-            onClick={() => setOpenPopup(true)}
+            onClick={() => {
+              setOpenPopup(true);
+              setRecordForEdit(null);
+            }}
           />
         </Toolbar>
         <TblContainer>
@@ -109,6 +123,19 @@ const Employees = () => {
                 <TableCell>{item.email}</TableCell>
                 <TableCell>{item.mobile}</TableCell>
                 <TableCell>{item.department}</TableCell>
+                <TableCell>
+                  <Controls.ActionButton color="primary">
+                    <EditOutlinedIcon
+                      fontSize="small"
+                      onClick={() => {
+                        openInPopup(item);
+                      }}
+                    />
+                  </Controls.ActionButton>
+                  <Controls.ActionButton color="secondary">
+                    <CloseIcon fontSize="small" />
+                  </Controls.ActionButton>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -120,7 +147,7 @@ const Employees = () => {
         openPopup={openPopup}
         setOpenPopup={setOpenPopup}
       >
-        <EmployeeForm addOrEdit={addOrEdit} />
+        <EmployeeForm addOrEdit={addOrEdit} recordForEdit={recordForEdit} />
       </Popup>
     </>
   );

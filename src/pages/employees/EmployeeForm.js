@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Controls from "../../components/controls/Controls";
 import { useForm, Form } from "../../components/useForm";
 import * as employeeService from "../../services/employeeService";
@@ -23,7 +23,7 @@ const initialFValues = {
 };
 
 const EmployeeForm = (props) => {
-  const { addOrEdit } = props;
+  const { addOrEdit, recordForEdit } = props;
   const validate = (fieldValues = values) => {
     let temp = { ...errors };
     if ("fullName" in fieldValues)
@@ -55,6 +55,13 @@ const EmployeeForm = (props) => {
       addOrEdit(values, resetForm);
     }
   };
+
+  useEffect(() => {
+    if (recordForEdit != null)
+      setValues({
+        ...recordForEdit,
+      });
+  }, [recordForEdit]);
 
   return (
     <Form onSubmit={handleSubmit}>
