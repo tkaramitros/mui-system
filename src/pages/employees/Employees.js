@@ -20,6 +20,7 @@ import Popup from "../../components/Popup";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import Notification from "../../components/Notification";
+import ConfirmDialog from "../../components/ConfirmDialog";
 
 const useStyles = makeStyles((theme) => ({
   pageContent: {
@@ -58,6 +59,11 @@ const Employees = () => {
     message: "",
     type: "",
   });
+  const [confirmDialog, setConfirmDialog] = useState({
+    isOpen: false,
+    title: "",
+    subTitle: "",
+  });
 
   const { TblContainer, TblHead, TblPagination, recordsAfterPaginAndSorting } =
     useTable(records, headCells, filterFn);
@@ -95,15 +101,17 @@ const Employees = () => {
   };
 
   const onDelete = (id) => {
-    if (window.confirm("Are you sure?")) {
-      employeeService.deleteEmployee(id);
-      setRecords(employeeService.getAllEmployees());
-      setNotify({
-        isOpen: true,
-        message: "Deleted Successfully",
-        type: "error",
-      });
-    }
+    setConfirmDialog({
+      ...confirmDialog,
+      isOpen: false,
+    });
+    employeeService.deleteEmployee(id);
+    setRecords(employeeService.getAllEmployees());
+    setNotify({
+      isOpen: true,
+      message: "Deleted Successfully",
+      type: "error",
+    });
   };
 
   return (
@@ -158,7 +166,16 @@ const Employees = () => {
                   </Controls.ActionButton>
                   <Controls.ActionButton
                     color="secondary"
-                    onClick={() => onDelete(item.id)}
+                    onClick={() => {
+                      setConfirmDialog({
+                        isOpen: true,
+                        title: "Are you sure?",
+                        subTitle: "You can't undo this operation",
+                        onConfirm: () => {
+                          onDelete(item.id);
+                        },
+                      });
+                    }}
                   >
                     <CloseIcon fontSize="small" />
                   </Controls.ActionButton>
@@ -177,6 +194,10 @@ const Employees = () => {
         <EmployeeForm addOrEdit={addOrEdit} recordForEdit={recordForEdit} />
       </Popup>
       <Notification notify={notify} setNotify={setNotify} />
+      <ConfirmDialog
+        confirmDialog={confirmDialog}
+        setConfirmDialog={setConfirmDialog}
+      />
     </>
   );
 };
