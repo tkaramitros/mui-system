@@ -121,10 +121,10 @@ const useTable = (records, headCells, filterFn) => {
   }
 
   const recordsAfterPaginAndSorting = () => {
-    return stableSort(records, getComparator(order, orderBy)).slice(
-      page * rowsPerPage,
-      (page + 1) * rowsPerPage
-    );
+    return stableSort(
+      filterFn.fn(records),
+      getComparator(order, orderBy)
+    ).slice(page * rowsPerPage, (page + 1) * rowsPerPage);
   };
 
   return {
