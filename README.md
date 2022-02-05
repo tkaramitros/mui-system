@@ -1,3 +1,10 @@
+# CRUD Form with ReactJS and MaterialUI
+
+## About
+
+Implementation of a user form for websites with reusable & extendable components madewith ReactJS and MaterialUI framework. All common input controls like input, text box,radio button, checkbox, dropdown list, date picker, popup dialog, table sorting etc. Technologies: ReactJS, MaterialUI
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
