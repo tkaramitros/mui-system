@@ -50,17 +50,17 @@ const Header = () => {
           </Grid>
           <Grid item sm></Grid>
           <Grid item>
-            <IconButton>
+            <IconButton size="large">
               <Badge badgeContent={4} color="secondary">
                 <NotificationsNoneIcon fontSize="small" />
               </Badge>
             </IconButton>
-            <IconButton>
+            <IconButton size="large">
               <Badge badgeContent={3} color="primary">
                 <ChatBubbleOutlineIcon fontSize="small" />
               </Badge>
             </IconButton>
-            <IconButton>
+            <IconButton size="large">
               <PowerSettingsNewIcon fontSize="small" />
             </IconButton>
           </Grid>

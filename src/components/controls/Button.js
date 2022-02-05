@@ -6,10 +6,10 @@ const Button = (props) => {
 
   return (
     <MuiButton
-      style={{ textTransform: "none", margin: "8px" }}
+      style={{ textTransform: "none" }}
       variant={variant || "contained"}
       size={size || "large"}
-      color={color || "primary"}
+      color={color}
       onClick={onClick}
       {...other}
     >

@@ -4,10 +4,14 @@ import SideMenu from "../components/SideMenu";
 import { makeStyles } from "@mui/styles";
 import Header from "../components/Header";
 import { CssBaseline } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import {
+  createTheme,
+  ThemeProvider,
+  StyledEngineProvider,
+} from "@mui/material/styles";
 import Employees from "../pages/employees/Employees";
 
-export const theme = createTheme({
+const theme = createTheme({
   palette: {
     primary: {
       main: "#333996",
@@ -45,18 +49,22 @@ const useStyles = makeStyles({
   },
 });
 
+console.log(theme);
+
 const App = () => {
   const classes = useStyles();
   return (
-    <ThemeProvider theme={theme}>
-      <SideMenu />
-      <div className={classes.appMain}>
-        <Header />
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <SideMenu />
+        <div className={classes.appMain}>
+          <Header />
 
-        <Employees />
-      </div>
-      <CssBaseline />
-    </ThemeProvider>
+          <Employees />
+        </div>
+        <CssBaseline />
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 };
 

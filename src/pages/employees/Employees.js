@@ -28,11 +28,13 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
   },
   searchInput: {
-    width: "75%",
+    width: "60%",
+    position: "absolute",
   },
   newButton: {
-    position: "absolute",
-    left: "235px",
+    position: "static",
+    left: "800px",
+    marginLeft: "auto",
   },
 }));
 
@@ -191,7 +193,9 @@ const Employees = () => {
         openPopup={openPopup}
         setOpenPopup={setOpenPopup}
       >
-        <EmployeeForm addOrEdit={addOrEdit} recordForEdit={recordForEdit} />
+        <div>
+          <EmployeeForm addOrEdit={addOrEdit} recordForEdit={recordForEdit} />
+        </div>
       </Popup>
       <Notification notify={notify} setNotify={setNotify} />
       <ConfirmDialog

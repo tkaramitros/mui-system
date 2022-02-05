@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
     "& tbody tr:hover": {
       backgroundColor: "#fffbf2",
-      cursos: "pointer",
+      cursor: "pointer",
     },
   },
 }));

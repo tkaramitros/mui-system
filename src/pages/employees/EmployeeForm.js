@@ -65,8 +65,8 @@ const EmployeeForm = (props) => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Grid container>
-        <Grid item xs={6}>
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={6}>
           <Controls.Input
             name="fullName"
             label="Full Name"
@@ -98,7 +98,7 @@ const EmployeeForm = (props) => {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <Controls.RadioGroup
             name="gender"
             label="Gender"
@@ -127,11 +127,12 @@ const EmployeeForm = (props) => {
             onChange={handleInputChange}
           />
           <div>
-            <Controls.Button text="Submit" type="submit" />
+            <Controls.Button text="Submit" type="submit" color="primary" />
             <Controls.Button
               text="Reset"
               color="secondary"
               onClick={resetForm}
+              style={{ textTransform: "none", marginLeft: "15px" }}
             />
           </div>
         </Grid>
